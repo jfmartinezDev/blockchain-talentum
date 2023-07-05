@@ -6,7 +6,8 @@ Created on Tue Jul  4 15:41:05 2023
 """
 
 # Módulo 1: Crear una cadena de bloques
-# Instalar Flask: pip install Flask==1.1.2 (Anaconda prompt)
+# Instalar Flask: pip install Flask==1.1.2 (Anaconda prompt) 
+# pip install Flask --upgrade
 
 # Importar las librerías
 import datetime
@@ -46,7 +47,7 @@ class Blockchain:
     
     #La función hash toma un bloque de la cadena y retorna el hash criptográfico del bloque
     def hash(self, block):
-        encoded_block = json.dumps(block, sort_keys=True)
+        encoded_block = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(encoded_block).hexdigest()
     
     def is_chain_valid(self, chain):
@@ -73,7 +74,8 @@ class Blockchain:
 # Crear una aplicación web
 
 app = Flask(__name__)
-
+# Si se obtiene un error 500, actualizar Flask, reiniciar SPYDER y ejecutar la siguiente línea
+#app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 # Crear una Blockchain
 
 blockchain = Blockchain()
@@ -98,7 +100,7 @@ def mine_block():
 # Obtener la cadena de bloques completa
 @app.route('/get_chain', methods = ['GET'])
 def get_chain():
-    response = {'chain' : blockchain.chain}
+    response = {'chain' : blockchain.chain,
                 'length' : len(blockchain.chain) }
     return jsonify(response), 200
 
